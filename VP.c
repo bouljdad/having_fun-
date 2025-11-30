@@ -18,11 +18,6 @@ node *new_node(char data)
     return stack_node;
 }
 
-int is_empty(node **top)
-{
-    return (top == NULL);
-}
-
 int push(char data)
 {
     node *stack_node = new_node(data);
@@ -70,27 +65,36 @@ bool match(char a, char b)
 bool    isValid(char* s)
 {
     int pos;
+    int i, j;
 
+    i = 0;
+    j = 0;
     pos = 0;
-    while (s[pos])
+    if ((strlen(s) % 2) != 0)
+        return false;
+    while (s[pos] !='\0')
     {
-        while (is_open(s[pos]))
+        while (s[pos] != '\0' && is_open(s[pos]))
         {
             push(s[pos]);
             pos++;
+            i++;
         }
-        while (is_close(s[pos]))
+        while (s[pos] != '\0' && is_close(s[pos]))
         {
             char temp;
             temp = pop();
-            printf("%c == %c\n", temp, s[pos]);
-            if(!match(s[pos],temp))
+            if(!match(temp,s[pos]))
             {
                 return false;
             }
+            j++;
             pos++;
         }
-        
+    }
+    if (i != j)
+    {
+        return false;
     }
     return true;
 }
